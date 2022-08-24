@@ -201,6 +201,13 @@
     $f_pending = $q_pending->fetch_array(); 
 
 
+ $q_pass = $conn->query("SELECT COUNT(merchant.merchant_id) as total, inspection.inspection_id, merchant.business_name,
+                                                          inspection.date,inspection.status 
+                                                 FROM merchant
+                                                 RIGHT JOIN inspection
+                                                 ON merchant.merchant_id = inspection.merchant_id 
+                                                 WHERE inspection.date > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)") or die(mysqli_error());
+    $f_pass = $q_pass->fetch_array(); 
  ?>
 
                    <div class="col-xl-3 col-sm-4 col-4 mb-4">
@@ -231,6 +238,24 @@
                                     
                                 </h1>
                                 <p class="mb-0">Waiting for Approval</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-xl-3 col-sm-4 col-4 mb-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                              <div class="align-self-center">
+                                <i class="fas fa-user-check  text-info fa-4x"></i>
+                              </div>
+                              <div class="text-end">
+                                <h1> <?php echo $f_pass['total']?>
+                                    
+                                </h1>
+                                <p class="mb-0">Certified by Alpha Lab</p>
                               </div>
                             </div>
                           </div>
