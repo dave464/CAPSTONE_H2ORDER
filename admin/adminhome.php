@@ -33,6 +33,13 @@
     <!-- Google chart Link -->
       <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
       <script type="text/javascript" src="../seller/Chart.min.js"></script>
+
+        <!-- Datatables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+ <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
+
+<link rel='stylesheet' href='https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css'>
+<link rel='stylesheet' href='https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css'>
 </head>
 
 <body>
@@ -269,12 +276,99 @@
        
        <canvas id="bar-chart" width="800" height="450"></canvas>
 
+
+
+
                                 </div>
                             </div>
                         </div>
-                    </div>
-                  
-                </div>
+
+
+ <div class="col-lg-8">
+    <div class="card">
+        <div class="card-body">                          
+         <div class="table-responsive">    
+            <table id="example" class="display" style="width:100%">
+              <thead>
+                <tr>
+                <th class="dada">RANK</th>
+                <th class="border-top-0">BUSINESS NAME</th>
+                 <th class="border-top-0">RATING</th>
+                </tr>
+               </thead>
+                    <tbody>
+                          <?php  
+                              $query = $conn->query("SELECT AVG(rating) as Rate , merchant.merchant_id, merchant.business_name, product_rating.rate_id,product_rating.rating ,merchant.status
+                                 FROM product_rating 
+                                 RIGHT JOIN merchant on product_rating.merchant_id= merchant.merchant_id
+                                 WHERE merchant.status = 'approved' 
+                                 GROUP BY merchant.business_name ORDER BY AVG(rating) DESC ") or die(mysqli_error());
+                                
+                                  while($fetch = $query->fetch_array()){
+                            ?>
+                        <tr>
+                            <td><?php echo $fetch['business_name']?> </td>
+                            <td><?php echo $fetch['business_name']?> </td>
+                            <td><?php 
+                                    if($fetch['Rate'] != NULL ){
+                                     echo  '<svg style="display:none;">
+                                      <defs>
+                                        <symbol id="fivestars">
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd" transform="translate(24)"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd" transform="translate(48)"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd" transform="translate(72)"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd"  transform="translate(96)"/>
+                                        </symbol>
+                                      </defs>
+                                    </svg>
+                                    <div class="rating">
+                                    <!--   <div class="rating-bg" style="width: 90%;"></div> -->
+                                      <progress class="rating-bg" value='. $fetch['Rate'].' max="5"></progress>
+                                      <svg><use xlink:href="#fivestars"/></svg>
+                                    </div>';
+                                    }else{
+                                        echo '<svg style="display:none;">
+                                      <defs>
+                                        <symbol id="fivestars">
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd" transform="translate(24)"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd" transform="translate(48)"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd" transform="translate(72)"/>
+                                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z M0 0 h24 v24 h-24 v-24" fill="white" fill-rule="evenodd"  transform="translate(96)"/>
+                                        </symbol>
+                                      </defs>
+                                    </svg>
+                                    <div class="rating">
+                                    <!--   <div class="rating-bg" style="width: 90%;"></div> -->
+                                      <progress class="rating-bg" value="0" max="5"></progress>
+                                      <svg><use xlink:href="#fivestars"/></svg>
+                                    </div>';
+                                        }
+
+                             ?> </td>
+                                                
+                             </tr>
+                                <?php
+                                      }
+                                    ?>
+                    </tbody>
+         </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <div class="col-xl-3 col-sm-4 col-4 mb-4">
+    <div class="card">
+        <div class="card-body">
+             <canvas id="pie-chart" height="337"></canvas>  
+         </div>
+    </div>
+ </div>
+
+            </div>
+            </div>
                 <!-- ============================================================== -->
                 <!-- Sales chart -->
                 <!-- ============================================================== -->
@@ -290,6 +384,21 @@ $c_brgy = mysqli_query($conn," SELECT COUNT(barangay) ,barangay, merchant_id FRO
                 WHERE status = 'approved'         
                 GROUP BY barangay
                 ORDER BY  length(barangay) ,barangay ");
+
+
+$c_done = mysqli_query($conn," SELECT  COUNT(DISTINCT merchant.merchant_id), merchant.merchant_id, merchant.business_name, merchant.status, inspection.date
+                                 FROM inspection 
+                                 RIGHT JOIN merchant on inspection.merchant_id= merchant.merchant_id
+                                 WHERE merchant.status = 'approved' &&  inspection.date > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+                                 GROUP BY merchant.business_name ");
+
+$c_pending = mysqli_query($conn," SELECT merchant_id,business_name,status FROM merchant WHERE status = 'approved' ");
+
+$count = mysqli_num_rows($c_done);
+
+$count1 = mysqli_num_rows($c_pending);
+$count2 = $count1-$count;
+
 
 ?>
 
@@ -332,7 +441,38 @@ $c_brgy = mysqli_query($conn," SELECT COUNT(barangay) ,barangay, merchant_id FRO
 });
        </script>        
 
-                
+    
+<script type="text/javascript">
+ 
+var chartDiv = document.getElementById('pie-chart').getContext('2d');
+var myChart = new Chart(chartDiv, {
+    type: 'doughnut',
+    data: {
+        labels: ['Done',' Pending'],
+        datasets: [
+        {
+            data: [<?php echo $count ?> , <?php echo $count2 ?> ],
+            backgroundColor: [
+               "#1e88e5",
+            "#26c6da",
+            "#6610f2",
+            "#7460ee"
+           
+            ]
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Verify Alpha Lab Result'
+        },
+    responsive: true,
+maintainAspectRatio: false,
+    }
+});
+    
+</script>
+
             </div>
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
@@ -376,8 +516,136 @@ $c_brgy = mysqli_query($conn," SELECT COUNT(barangay) ,barangay, merchant_id FRO
     <!--Custom JavaScript -->
     <script src="js/pages/dashboards/dashboard1.js"></script>
     <script src="js/custom.js"></script>
+<!-----------------------------------SCRIPTS-------------------------------------------->   
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+<script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js'></script> 
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js'></script>
+<script src='https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+ 
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+   var table = $('#example').DataTable({
+"aLengthMenu": [[5, 10, 25, 50,  75, -1], [5,10, 25, 50, 75, "All"]],
+    "iDisplayLength": 5,
+        
+         aaSorting: [[2, 'desc']],
+        searching: false
+        
+    });
+
+    table.on( 'order.dt search.dt', function () {
+        let i = 1;
+ 
+        table.cells(null, 0, {search:'applied', order:'applied'}).every( function (cell) {
+            this.data(i++);
+        } );
+    } ).draw();
+});
+</script>
+   
+
+
+<style>
+.dataTables_wrapper .dt-buttons {
+  background-color: white;
+  text-align:center;
+  width:350px;
+  margin-left:300px;
+  margin-bottom:-40px;
+}
+#addBtn.btn.btn-primary{
+  margin-top: 130px;
+  margin-left:20px;
+ bottom:20px;
+ color:white;
+}
+#table_length.dataTables_length{
+        width:120px;
+        height: 10px;
+        margin-left:13px;
+    }
+
+#table_paginate.dataTables_paginate.paging_simple_numbers{
+  margin-right:20px;
+}
+
+#table_info.dataTables_info{
+  width:200px;
+        height: 20px;
+        margin-left:13px;
+}
+
+#table_filter.dataTables_filter{
+   
+    margin-right: 20px;
+    margin-bottom:10px;
+
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+  padding: 0;
+}
+
+th.dada.sorting{
+     width: 0;
+}
+
+table.dataTable.no-footer {
+    border-bottom: 0px solid #111;
+}
+tbody, td, tfoot, th, thead, tr {
+    border-color: #DCDCDC;
+    border-style:solid;
+    border-width: 0;
+}
+
+.btn-info {
+    color: white;
+}
 
    
+.rating {
+  width: 120px;
+  height: 24px;
+  position: relative;
+  background-color: gray;
+}
+
+.rating progress.rating-bg {
+  -webkit-appearance: none;
+  -moz-appearence: none;
+  appearance: none;
+  border: none;
+  display: inline-block;
+  height: 24px;
+  width: 100%;
+  color: orange;
+}
+
+.rating progress.rating-bg::-webkit-progress-value {
+  background-color: orange;
+}
+
+.rating progress.rating-bg::-moz-progress-bar {
+  background-color: orange;
+}
+
+.rating svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+
 </body>
 
 </html>
