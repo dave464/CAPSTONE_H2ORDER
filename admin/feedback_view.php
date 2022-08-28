@@ -219,7 +219,7 @@
                                                 <th class="border-top-0">ID</th>
                                                 <th class="border-top-0">BUSINESS NAME</th>
                                                 <th class="border-top-0">DATE</th>
-                                                <th class="border-top-0">ACTION</th>
+                                                <th class="border-top-0" style="text-align: center;">ACTION</th>
                                                 
                                             </tr>
                                         </thead>
@@ -233,8 +233,11 @@
                                                 <td><?php echo $fetch['feedback_id']?></td>
                                                 <td><?php echo $fetch['business_name']?></td>
                                                 <td><?php echo date("M d, Y", strtotime($fetch['date']))?></td>
-                                                <td><a class = "btn btn-success"
-       href="feedback_print.php?feedback_id=<?php echo $fetch['feedback_id']?>">View</a></td>
+                                                <td align="center"><a class = "btn btn-success"
+                                                        href="feedback_print.php?feedback_id=<?php echo $fetch['feedback_id']?>" style="color: white">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </a>
+                                                </td>
                                                
                                             </tr>
                                              <?php
@@ -354,6 +357,7 @@ $.fn.dataTable.ext.search.push(
         
       pageLength: 10,
         lengthMenu: [[10, 20, 30, 40, 50 - 1], [10, 20, 30, 40, 50, 'all']],
+         aaSorting: [[2, 'desc']],
        
         "columnDefs": [ {
             "searchable": false,
@@ -363,7 +367,7 @@ $.fn.dataTable.ext.search.push(
             type:'title-string', targets: 0,
         } ],
 
-         "order": [[ 1, 'asc' ]],
+        
 
         "dom": 'Blfrtip',
                 "buttons": [  

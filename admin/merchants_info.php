@@ -16,30 +16,22 @@
     <meta name="description"
         content="Material Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>Home</title>
+    <title>Merchant Information</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/materialpro-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
-    <!-- chartist CSS -->
-    <link href="assets/plugins/chartist-js/dist/chartist.min.css" rel="stylesheet">
-    <link href="assets/plugins/chartist-js/dist/chartist-init.css" rel="stylesheet">
-    <link href="assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.css" rel="stylesheet">
-    <!--This page css - Morris CSS -->
-    <link href="assets/plugins/c3-master/c3.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="css/style.min.css" rel="stylesheet">
-
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" crossorigin="anonymous"></script>
-    <!-- Google chart Link -->
-      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-      <script type="text/javascript" src="../seller/Chart.min.js"></script>
-
-        <!-- Datatables -->
+    <!-- Datatables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
  <link rel='stylesheet' href='https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css'>
 
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css'>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -55,7 +47,7 @@
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
         data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
         <!-- ============================================================== -->
         <!-- Topbar header - style you can find in pages.scss -->
@@ -66,7 +58,7 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand ms-4" href="adminhome.php">
+                   <a class="navbar-brand ms-4" href="adminhome.php">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -145,7 +137,7 @@
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
-                  <?php include 'navbar.php' ?>
+               <?php include 'navbar.php' ?>
                 <!-- End Sidebar navigation -->
             </div>
             <!-- End Sidebar scroll-->
@@ -153,8 +145,7 @@
                 <div class="row">
                     <div class="col-4 link-wrap">
                         <!-- item-->
-                        <a href="logout.php" class="link" data-toggle="tooltip" title="" data-original-title="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
-                       
+                        <a href="logout.php" class="link" data-toggle="tooltip" title="" data-original-title="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>                   
                     </div>
                     <div class="col-4 link-wrap" style="margin-left:-50px; margin-top: 3px">
                           Logout                    
@@ -175,12 +166,12 @@
             <div class="page-breadcrumb">
                 <div class="row align-items-center">
                     <div class="col-md-6 col-8 align-self-center">
-                        <h3 class="page-title mb-0 p-0">Dashboard</h3>
+                        <h3 class="page-title mb-0 p-0">List of Merchants</h3>
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                                    <li class="breadcrumb-item active" aria-current="page">List of Merchants</li>
                                 </ol>
                             </nav>
                         </div>
@@ -196,129 +187,42 @@
             <!-- ============================================================== -->
             <div class="container-fluid">
                 <!-- ============================================================== -->
-                <!-- Sales chart -->
+                <!-- Start Page Content -->
                 <!-- ============================================================== -->
-                <div class="row">
+               <div class="row">
                     <!-- Column -->
-<?php 
-    $q_wstation = $conn->query("SELECT COUNT(merchant_id) as total FROM `merchant` WHERE status ='approved' ") or die(mysqli_error());
-    $f_wstation = $q_wstation->fetch_array(); 
-
-    $q_pending = $conn->query("SELECT COUNT(merchant_id) as total FROM `merchant` WHERE status ='pending' ") or die(mysqli_error());
-    $f_pending = $q_pending->fetch_array(); 
-
-
- $q_pass = $conn->query("SELECT COUNT(merchant.merchant_id) as total, inspection.inspection_id, merchant.business_name,
-                                                          inspection.date,inspection.status 
-                                                 FROM merchant
-                                                 RIGHT JOIN inspection
-                                                 ON merchant.merchant_id = inspection.merchant_id 
-                                                 WHERE inspection.date > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)") or die(mysqli_error());
-    $f_pass = $q_pass->fetch_array(); 
- ?>
-
-                   <div class="col-xl-3 col-sm-4 col-4 mb-4">
+                    <div class="col-lg-4 col-xlg-3 col-md-5">
                         <div class="card">
-                          <div class="card-body">
-                            <div class="d-flex justify-content-between px-md-1">
-                              <div class="align-self-center">
-                                <i class="fas fa-store text-info fa-4x"></i>
-                              </div>
-                              <div class="text-end">
-                                <h1> <?php echo $f_wstation['total']?></h1>
-                                <p class="mb-0">Water Refilling Station</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                            <div class="card-body profile-card">
 
-                     <div class="col-xl-3 col-sm-4 col-4 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="d-flex justify-content-between px-md-1">
-                              <div class="align-self-center">
-                                <i class="fas fa-spinner fa-spin text-info fa-4x"></i>
-                              </div>
-                              <div class="text-end">
-                                <h1> <?php echo $f_pending['total']?>
+<?php
+    
+    $query = $conn->query("SELECT * FROM `merchant` WHERE `merchant_id` = '$_REQUEST[merchant_id]'") or die(mysqli_error());
+    $fetch = $query->fetch_array();
+    
+?>
+
+                                <center class="mt-4"> <img src= "../photo/<?php echo $fetch['image']?>"
+                                         width="200" />
+                                    <h4 class="card-title mt-2"><?php echo $fetch['business_name']?></h4>
+                                   
                                     
-                                </h1>
-                                <p class="mb-0">Waiting for Approval</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-xl-3 col-sm-4 col-4 mb-4">
-                        <div class="card">
-                          <div class="card-body">
-                            <div class="d-flex justify-content-between px-md-1">
-                              <div class="align-self-center">
-                                <i class="fas fa-user-check  text-info fa-4x"></i>
-                              </div>
-                              <div class="text-end">
-                                <h1> <?php echo $f_pass['total']?>
-                                    
-                                </h1>
-                                <p class="mb-0">Certified by Alpha Lab</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                               
-       
-       <canvas id="bar-chart" width="800" height="450"></canvas>
+                                </center>
 
 
 
-
-                                </div>
-                            </div>
-                        </div>
-
-
- <div class="col-lg-8" >
-    <div class="card">
-        <div class="card-body" >                          
-          
-             <center><h4> <?php 
-                         date_default_timezone_set('Asia/Manila');
-                         echo strtoupper(date("F Y")). "'S " ;                   
-                     ?>&nbsp <i class="fas fa-award" style="color:gold; font-size: 24px"></i>
-                      &nbsp TOP-RATED WATER REFILLING STATION &nbsp
-
-                 </h4>
-                 </center>  <br>
-            <table id="example" class="display" style="width:100%" >
-              <thead>
-                <tr>
-                <th class="dada">RANK</th>
-                <th class="border-top-0">BUSINESS NAME</th>
-                 <th class="border-top-0">RATING</th>
-                </tr>
-               </thead>
-                    <tbody>
-                          <?php  
-                              $query = $conn->query("SELECT AVG(rating) as Rate , merchant.merchant_id, merchant.business_name, product_rating.rate_id,product_rating.rating ,product_rating.date, merchant.status
+                                <?php  
+                                                  $query = $conn->query("SELECT AVG(rating) as Rate , merchant.merchant_id, merchant.business_name, product_rating.rate_id,product_rating.rating ,merchant.status
                                  FROM product_rating 
                                  RIGHT JOIN merchant on product_rating.merchant_id= merchant.merchant_id
-                                 WHERE  MONTH(product_rating.date) = MONTH(now())
-                                 and YEAR(product_rating.date) = YEAR(now())
-                                 GROUP BY merchant.merchant_id ORDER BY AVG(rating) DESC ") or die(mysqli_error());
+                                 WHERE merchant.status = 'approved' && merchant.merchant_id= '$_REQUEST[merchant_id]'
+                                 GROUP BY merchant.business_name ORDER BY AVG(rating) DESC ") or die(mysqli_error());
                                 
                                   while($fetch = $query->fetch_array()){
                             ?>
-                        <tr>
-                            <td><?php echo $fetch['merchant_id']?> </td>
-                            <td><?php echo $fetch['business_name']?> </td>
-                            <td><?php 
+                       
+
+                            <?php 
                                     if($fetch['Rate'] != NULL ){
                                      echo  '<svg style="display:none;">
                                       <defs>
@@ -355,132 +259,110 @@
                                     </div>';
                                         }
 
-                             ?> </td>
-                                                
-                             </tr>
-                                <?php
-                                      }
-                                    ?>
-                    </tbody>
-         </table>
-        </div>
-    </div>
-</div>
+                             ?> 
+                            
+                                        <?php
+                                                }
+                                              ?>
 
- <div class="col-xl-3 col-sm-4 col-4 mb-4">
-    <div class="card">
-        <div class="card-body">
-             <canvas id="pie-chart" height="313"></canvas>  
-         </div>
-    </div>
- </div>
 
-            </div>
-            </div>
-                <!-- ============================================================== -->
-                <!-- Sales chart -->
-                <!-- ============================================================== -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
 
+                    
 <?php
-
-$brgy = mysqli_query($conn," SELECT barangay, merchant_id FROM merchant        
-                WHERE status = 'approved'   
-                GROUP BY barangay
-                ORDER BY length(barangay) ,barangay   ");
-
-$c_brgy = mysqli_query($conn," SELECT COUNT(barangay) ,barangay, merchant_id FROM merchant
-                WHERE status = 'approved'         
-                GROUP BY barangay
-                ORDER BY  length(barangay) ,barangay ");
-
-
-$c_done = mysqli_query($conn," SELECT  COUNT(DISTINCT merchant.merchant_id), merchant.merchant_id, merchant.business_name, merchant.status, inspection.date
-                                 FROM inspection 
-                                 RIGHT JOIN merchant on inspection.merchant_id= merchant.merchant_id
-                                 WHERE merchant.status = 'approved' &&  inspection.date > DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-                                 GROUP BY merchant.merchant_id ");
-
-$c_pending = mysqli_query($conn," SELECT merchant_id,business_name,status FROM merchant WHERE status = 'approved' ");
-
-$count = mysqli_num_rows($c_done);
-
-$count1 = mysqli_num_rows($c_pending);
-$count2 = $count1-$count;
-
-
+    
+    $query = $conn->query("SELECT * FROM `merchant` WHERE `merchant_id` = '$_REQUEST[merchant_id]'") or die(mysqli_error());
+    $fetch = $query->fetch_array();
+    
 ?>
+                    <!-- Column -->
+                    <div class="col-lg-8 col-xlg-9 col-md-7">
+                        <div class="card">
+                            <div class="card-body">
+                                <form class="form-horizontal form-material mx-2"  method = "POST" enctype = "multipart/form-data"
+                                        action = "query_verified_merchant.php?merchant_id=<?php echo $fetch['merchant_id']?>" >
 
-       <script type="text/javascript">
-           new Chart(document.getElementById("bar-chart"), {
-    type: 'bar',
-    data: {
-      labels: [<?php while ($fetch3 = mysqli_fetch_array($brgy)) {
-                    echo '"' . $fetch3['barangay'] . '",';
-            } ?> ],
-      datasets: [
-        {
-          label: "Total Water Refilling Station",
-          backgroundColor: ['#0382ff','#50a8ff','#77bbff','#9fcfff','#13c3ef','#38ccf1','#6fdaf5','#a6e8f9',
-                   '#00b300','#008000','#009a00','#00b300','#a2d142','#aad552','#b1d961','#b9dc71',
-                   '#ffff00','#ffff4e','#ffff62','#ffff76','#ff9507','#ff9d1b','#ffa62e','#ffae42',
-                   '#ffac14','#ffb327','#ffba3b','#ffc14e','#ff5314','#ff6227','#ff703b','#ff7e4e',
-                   '#d80000','#ff1414','#ff2727','#ff3b3b','#820e57','#991066','#b01376','#c71585',
-                   '#800080','#9a009a','#b300b3','#cd00cd','#8a2be2','#9641e5','#a257e8','#bb84ee'],
-          data: [<?php while ($fetch4 = mysqli_fetch_array($c_brgy)) {
-                    echo '"' .$fetch4['COUNT(barangay)'] . '" ,';
-            } ?>]
-        }
-      ]
-    },
-    options: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: 'Total Water Refilling Station in Nasugbu,Batangas'
-      },
-      scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero: true
-            }
-        }]
-      }
-    }
-});
-       </script>        
+                                        <input type="hidden" value="<?php echo $fetch['merchant_id']?>" name="merchant_id">
 
-    
-<script type="text/javascript">
- 
-var chartDiv = document.getElementById('pie-chart').getContext('2d');
-var myChart = new Chart(chartDiv, {
-    type: 'doughnut',
-    data: {
-        labels: ['Done',' Pending'],
-        datasets: [
-        {
-            data: [<?php echo $count ?> , <?php echo $count2 ?> ],
-            backgroundColor: [
-               "#1e88e5",
-            "#26c6da",
-            "#6610f2",
-            "#7460ee"
-           
-            ]
-        }]
-    },
-    options: {
-        title: {
-            display: true,
-            text: 'Verify Alpha Lab Result'
-        },
-    responsive: true,
-maintainAspectRatio: false,
-    }
-});
-    
-</script>
+                                    <div class="form-group">
+                                        <label class="col-md-12 mb-0">
+                                              <i class="fas fa-store fa-lg me-1 fa-fw"></i>Business Name</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Fullname"
+                                                class="form-control ps-0 form-control-line"
+                                                value = "<?php echo $fetch['business_name']?>" name = "business_name" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="example-email" class="col-md-12">
+                                          <i class="fas fa-map-marker fa-lg me-1 fa-fw"></i>Address</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Username"
+                                                class="form-control ps-0 form-control-line"
+                                                value = "<?php echo $fetch['address']?> <?php echo $fetch['barangay']?> Nasugbu,Batangas" name = "address" disabled>
+                                        </div>
+                                    </div>
 
+                                    <div class="form-group">
+                                        <label for="example-email" class="col-md-12">
+                                          <i class="fas fa-user fa-lg me-1 fa-fw"></i>Owner</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Username"
+                                                class="form-control ps-0 form-control-line"
+                                                value = "<?php echo $fetch['owner']?>" name = "owner" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="example-email" class="col-md-12">
+                                          <i class="fas fa-phone fa-lg me-1 fa-fw"></i>Contact Number</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Username"
+                                                class="form-control ps-0 form-control-line"
+                                                value = "<?php echo $fetch['contact_number']?>" name = "contact_number" disabled>
+                                        </div>
+                                    </div>
+
+
+                                     <div class="form-group">
+                                        <label for="example-email" class="col-md-12">
+                                         <i class="fas fa-bell fa-lg me-1 fa-fw"></i>Status</label>
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Username"
+                                                class="form-control ps-0 form-control-line"
+                                                value = "<?php echo $fetch['status']?>" name = "status" disabled>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-sm-12 d-flex">
+                                              <a class = "btn btn-danger" href="delete_merchant.php?merchant_id=<?php echo $fetch['merchant_id']?>" onclick = "confirmationDelete(this); return false;"
+                                                     style="color:white; margin-left:10px">
+                                                    <i class="fa-solid fa-trash"></i></a>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Column -->
+                </div>
+                    </div>
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Right sidebar -->
+                <!-- ============================================================== -->
+                <!-- .right-sidebar -->
+                <!-- ============================================================== -->
+                <!-- End Right sidebar -->
+                <!-- ============================================================== -->
             </div>
             <!-- ============================================================== -->
             <!-- End Container fluid  -->
@@ -512,18 +394,10 @@ maintainAspectRatio: false,
     <script src="js/waves.js"></script>
     <!--Menu sidebar -->
     <script src="js/sidebarmenu.js"></script>
-    <!-- ============================================================== -->
-    <!-- This page plugins -->
-    <!-- ============================================================== -->
-    <!-- chartist chart -->
-    <script src="assets/plugins/chartist-js/dist/chartist.min.js"></script>
-    <script src="assets/plugins/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js"></script>
-    <!--c3 JavaScript -->
-    <script src="assets/plugins/d3/d3.min.js"></script>
-    <script src="assets/plugins/c3-master/c3.min.js"></script>
     <!--Custom JavaScript -->
-    <script src="js/pages/dashboards/dashboard1.js"></script>
     <script src="js/custom.js"></script>
+
+
 <!-----------------------------------SCRIPTS-------------------------------------------->   
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script src='https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js'></script>
@@ -536,29 +410,143 @@ maintainAspectRatio: false,
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
  
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+<script src='https://cdn.datatables.net/datetime/1.0.3/js/dataTables.dateTime.min.js'></script>
 
 
-<script type="text/javascript">
-    $(document).ready(function () {
-   var table = $('#example').DataTable({
- "bPaginate": false,
-  "bInfo": false,
-        
-         aaSorting: [[2, 'desc']],
-        searching: false
-        
+<script type = "text/javascript">
+    function confirmationDelete(anchor){
+        var conf = confirm("Are you sure you want to delete this record?");
+        if(conf){
+            window.location = anchor.attr("href");
+        }
+    } 
+</script>
+   
+<script type = "text/javascript">
+
+ var minDate, maxDate;
+// Custom filtering function which will search data in column four between two values
+$.fn.dataTable.ext.search.push(
+    function( settings, data, dataIndex ) {
+        var min = minDate.val();
+        var max = maxDate.val();
+        var date = new Date( data[2] );
+ 
+        if (
+            ( min === null && max === null ) ||
+            ( min === null && date <= max ) ||
+            ( min <= date   && max === null ) ||
+            ( min <= date   && date <= max )
+        ) {
+            return true;
+        }
+        return false;
+    }
+);
+
+
+  $(document).ready(function(){
+     // Create date inputs
+    minDate = new DateTime($('#min'), {
+        format: 'MMMM Do YYYY'
+    });
+    maxDate = new DateTime($('#max'), {
+        format: 'MMMM Do YYYY'
     });
 
-    table.on( 'order.dt search.dt', function () {
+  var table = $('#table').DataTable(
+        {
+        
+      pageLength: 10,
+        lengthMenu: [[10, 20, 30, 40, 50 - 1], [10, 20, 30, 40, 50, 'all']],
+       
+        "columnDefs": [ {
+            "searchable": false,
+
+            "orderable": false,
+           
+            type:'title-string', targets: 0,
+        } ],
+
+        "dom": 'Blfrtip',
+                "buttons": [  
+                  
+                  {  
+                        extend: 'copy',  
+                        className: 'btn btn-info rounded-0',  
+                        text: '<i class="far fa-file-excel"></i> Copy',
+                        title:'Alpha Lab Test',
+                        exportOptions: {
+                            columns: ':visible:not(:last-child)'
+                        }  
+                    }, 
+                    {  
+                        extend: 'excel',  
+                        className: 'btn btn-info rounded-0',  
+                        text: '<i class="far fa-file-excel"></i> Excel',
+                        title:'Alpha Lab Test',
+                        exportOptions: {
+                            columns: ':visible:not(:last-child)'
+                        }  
+                    },  
+                   
+                    {  
+                        extend: 'pdf',  
+                        className: 'btn btn-info rounded-0',  
+                        text: '<i class="far fa-file-pdf"></i> Pdf',
+                        title:'Alpha Lab Test',
+                        exportOptions: {
+                            columns: ':visible:not(:last-child)'
+                        }  
+                    },  
+                    
+                    {  
+                        extend: 'print',  
+                        className: 'btn btn-info rounded-0',  
+                        text: '<i class="fas fa-print"></i> Print' ,
+                        title:'Alpha Lab Test',
+                        exportOptions: {
+                            columns: ':visible:not(:last-child)'
+                            
+                        } 
+                    },
+                   
+                ]  ,
+
+
+
+          
+                "createdRow": function (row, data, index) {
+                    if (data[3] == 'VERIFIED') {
+                      $('td', row).eq(3).css({
+                      'color': 'green',
+                      });
+                    }
+                    else if (data[3] == 'PENDING') {
+                      $('td', row).eq(3).css({
+                       'color': '#FF8C00',
+                     });
+                   }
+                }
+        }
+    );
+
+ table.on( 'order.dt search.dt', function () {
         let i = 1;
  
-        table.cells(null, 0, {search:'applied', order:'applied'}).every( function (cell) {
+        t.cells(null, 0, {search:'applied', order:'applied'}).every( function (cell) {
             this.data(i++);
         } );
     } ).draw();
-});
-</script>
-   
+
+       // Refilter the table
+    $('#min, #max').on('change', function () {
+        table.draw();
+    });
+
+    });
+</script> 
 
 
 <style>
@@ -600,11 +588,6 @@ maintainAspectRatio: false,
 .dataTables_wrapper .dataTables_paginate .paginate_button{
   padding: 0;
 }
-
-th.dada.sorting{
-     width: 0;
-}
-
 table.dataTable.no-footer {
     border-bottom: 0px solid #111;
 }
@@ -618,12 +601,13 @@ tbody, td, tfoot, th, thead, tr {
     color: white;
 }
 
-   
+  
 .rating {
   width: 120px;
   height: 24px;
   position: relative;
   background-color: gray;
+  margin-left: 90px;
 }
 
 .rating progress.rating-bg {
@@ -653,9 +637,7 @@ tbody, td, tfoot, th, thead, tr {
   height: 100%;
 }
 
-.dataTables_wrapper {
-    height: 260px;
-}
+
 </style>
 
 </body>

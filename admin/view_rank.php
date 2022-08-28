@@ -16,7 +16,7 @@
     <meta name="description"
         content="Material Pro Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
     <meta name="robots" content="noindex,nofollow">
-    <title>List of Merchant</title>
+    <title>Report</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/materialpro-lite/" />
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">
@@ -30,8 +30,6 @@
 
 <link rel='stylesheet' href='https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css'>
 <link rel='stylesheet' href='https://cdn.datatables.net/datetime/1.0.3/css/dataTables.dateTime.min.css'>
-
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -137,7 +135,7 @@
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
-                 <?php include 'navbar.php' ?>
+                  <?php include 'navbar.php' ?>
                 <!-- End Sidebar navigation -->
             </div>
             <!-- End Sidebar scroll-->
@@ -171,7 +169,7 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">List of Merchants</li>
+                                    <li class="breadcrumb-item active" aria-current="page">Reports</li>
                                 </ol>
                             </nav>
                         </div>
@@ -199,54 +197,60 @@
                                 <div class="table-responsive">
 
 
-
-
-
-<a  class = "btn btn-info" href = "merchant_list.php"
- style="margin-left:20px; color:white;margin-top:20px;">
- <i class = "fas fa-user-check"></i>
-                    Verified </a>
-
-<a class="btn btn-outline-info" href = "pending_merchant_list.php" style="margin-top: 20px">  
-    <i class = "fa fa-spinner fa-spin"></i> Pending </a>
-
-<a class="btn btn-outline-info" href = "merchant_ranking.php" style="margin-top: 20px">  
-    <i class = "fa fa-trophy"></i> Ranking </a>
-
-
- <br><br>
-    
-
   <!--<a class = "btn btn-primary"  id ="addBtn" href="add_inspection.php" > Add Data</a> </div>-->
      <br>
 
 <!----------------------------- DATATABLE DATE FILTER ---------------------->
+<table border="0" cellspacing="5" cellpadding="5" style="margin-left: 15px; margin-bottom:30px;">
+        <tbody><tr>
+            <td>Minimum date:</td>
+            <td><input type="text" id="min" name="min"></td>
+        </tr>
+        <tr>
+            <td>Maximum date:</td>
+            <td><input type="text" id="max" name="max"></td>
+        </tr>
+    </tbody>
+</table>
 
                                     <table id="table" class="table user-table">
                                         <thead>
                                             <tr>
                                                 <th class="border-top-0">ID</th>
-                                                <th class="border-top-0">BUSINESS NAME</th>
-                                                <th class="border-top-0">ADDRESS</th>
-                                                <th class="border-top-0">ACCOUNT STATUS</th>
+                                                <th class="border-top-0">DATE</th>
+                                                <th class="border-top-0">WEARING FACEMASK</th>
+                                                <th class="border-top-0">COMPLETE UNIFORM</th>
+                                                <th class="border-top-0">DELIVERY ON TIME</th>
+                                                <th class="border-top-0">COMMENT</th>                                              
                                                 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                             <?php  
-                                                 $query = $conn->query("SELECT * 
-                                                 FROM merchant 
-                                                 WHERE status='approved'
-                                                 ORDER BY business_name ASC ") or die(mysqli_error());
-                                                 while($fetch = $query->fetch_array()){
+                                              <?php  
+                                               $query = $conn->query("SELECT merchant.merchant_id, merchant.business_name, product_rating.rate_id,product_rating.rating ,product_rating.date, product_rating.comment, product_rating.w_facemask, product_rating.c_uniform, product_rating.on_time
+                                 FROM product_rating 
+                                 LEFT JOIN merchant on product_rating.merchant_id= merchant.merchant_id WHERE  product_rating.merchant_id = '".$_REQUEST['merchant_id']."'") or die(mysqli_error());
+                                                while($fetch = $query->fetch_array()){
                                               ?>
                                             <tr>
                                                 <td><?php echo $fetch['merchant_id']?></td>
-                                                <td><?php echo $fetch['business_name']?></td>
-                                                <td><?php echo $fetch['address']?> <?php echo $fetch['barangay']?> Nasugbu,Batangas</td>
-                                                <td><p style="color:green"> <?php echo strtoupper($fetch['status'])?> &nbsp <a class = "btn btn-success" name="up" href="merchants_info.php?merchant_id=<?php echo 
-                                                     $fetch['merchant_id']?>" style="color:white;" ><i class="fa-solid fa-eye"></i></a></td>
-                                               
+                                                
+                                                <td><?php echo date("M d, Y", strtotime($fetch['date']))?></td>
+                                                <td><?php echo $fetch['w_facemask']?></td>
+                                                <td><?php echo $fetch['c_uniform']?></td>
+                                               <td><?php echo $fetch['on_time']?></td>
+                                               <td><?php 
+                                                        if ($fetch['comment']!=NULL) {
+                                                            echo ' '.$fetch['comment'].' ' ;
+                                                        }else{
+                                                            echo ' No Comment ';
+                                                        }
+                                               ?>
+                                                   
+
+                                               </td>
+
+                                                <input type="hidden" name="business_name" class="input"  value="<?php echo $fetch['business_name']?>" id="business_name" >
                                             </tr>
                                              <?php
                                                 }
@@ -328,8 +332,13 @@
     } 
 </script>
    
+  
 <script type = "text/javascript">
 
+
+    let Business_name = document.getElementById("business_name").value; 
+
+ 
  var minDate, maxDate;
 // Custom filtering function which will search data in column four between two values
 $.fn.dataTable.ext.search.push(
@@ -351,7 +360,7 @@ $.fn.dataTable.ext.search.push(
 );
 
 
-  $(document).ready(function(){
+    $(document).ready(function(){
      // Create date inputs
     minDate = new DateTime($('#min'), {
         format: 'MMMM Do YYYY'
@@ -360,11 +369,11 @@ $.fn.dataTable.ext.search.push(
         format: 'MMMM Do YYYY'
     });
 
-  var table = $('#table').DataTable(
-        {
-        
+    var table = $('#table').DataTable(
+        {       
       pageLength: 10,
         lengthMenu: [[10, 20, 30, 40, 50 - 1], [10, 20, 30, 40, 50, 'all']],
+        aaSorting: [[1, 'desc']],
        
         "columnDefs": [ {
             "searchable": false,
@@ -374,8 +383,6 @@ $.fn.dataTable.ext.search.push(
             type:'title-string', targets: 0,
         } ],
 
-         "order": [[ 1, 'asc' ]],
-
         "dom": 'Blfrtip',
                 "buttons": [  
                   
@@ -383,7 +390,7 @@ $.fn.dataTable.ext.search.push(
                         extend: 'copy',  
                         className: 'btn btn-info rounded-0',  
                         text: '<i class="far fa-file-excel"></i> Copy',
-                        title:'List of Merchants',
+                        title: Business_name,
                         exportOptions: {
                             columns: ':visible:not(:last-child)'
                         }  
@@ -392,7 +399,7 @@ $.fn.dataTable.ext.search.push(
                         extend: 'excel',  
                         className: 'btn btn-info rounded-0',  
                         text: '<i class="far fa-file-excel"></i> Excel',
-                        title:'List of Merchants',
+                        title: Business_name,
                         exportOptions: {
                             columns: ':visible:not(:last-child)'
                         }  
@@ -402,7 +409,7 @@ $.fn.dataTable.ext.search.push(
                         extend: 'pdf',  
                         className: 'btn btn-info rounded-0',  
                         text: '<i class="far fa-file-pdf"></i> Pdf',
-                        title:'List of Merchants',
+                        title:Business_name,
                         exportOptions: {
                             columns: ':visible:not(:last-child)'
                         }  
@@ -412,7 +419,7 @@ $.fn.dataTable.ext.search.push(
                         extend: 'print',  
                         className: 'btn btn-info rounded-0',  
                         text: '<i class="fas fa-print"></i> Print' ,
-                        title:'List of Merchants',
+                        title: Business_name,
                         exportOptions: {
                             columns: ':visible:not(:last-child)'
                             
@@ -421,23 +428,29 @@ $.fn.dataTable.ext.search.push(
                    
                 ]  ,
 
-          
+                
                 "createdRow": function (row, data, index) {
-                    if (data[3] == 'APPROVED') {
-                      $('td', row).eq(3).css({
-                      'color': 'green',
-                      });
-                    }
-                    else if (data[3] == 'Failed') {
-                      $('td', row).eq(3).css({
-                       'color': 'red',
-                     });
-                   }
-                }
+                    if (data[4] == 'Active') {
+                        $('td', row).eq(4).css({
+                          'color': 'green',
+                       });
+                     }
+
+                    else if (data[4] == 'Expired') {
+                        $('td', row).eq(4).css({
+                          'color': 'red',
+                        });
+                     }
+                  }
         }
     );
 
-table.on( 'order.dt search.dt', function () {
+    // Refilter the table
+    $('#min, #max').on('change', function () {
+        table.draw();
+    });
+
+     table.on( 'order.dt search.dt', function () {
         let i = 1;
  
         table.cells(null, 0, {search:'applied', order:'applied'}).every( function (cell) {
@@ -445,12 +458,8 @@ table.on( 'order.dt search.dt', function () {
         } );
     } ).draw();
 
-       // Refilter the table
-    $('#min, #max').on('change', function () {
-        table.draw();
     });
 
-    });
 </script> 
 
 

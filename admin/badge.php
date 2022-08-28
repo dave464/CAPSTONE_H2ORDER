@@ -217,7 +217,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-top-0">ID</th>
-                                                <th class="border-top-0">NAME</th>
+                                                <th class="border-top-0">BUSINESS NAME</th>
                                                 <th class="border-top-0">DATE</th>
                                                 <th class="border-top-0">STATUS</th>                                               
                                                 <th class="border-top-0">ACTION</th>
@@ -360,6 +360,7 @@ $.fn.dataTable.ext.search.push(
         {       
       pageLength: 10,
         lengthMenu: [[10, 20, 30, 40, 50 - 1], [10, 20, 30, 40, 50, 'all']],
+         aaSorting: [[2, 'desc']],
        
         "columnDefs": [ {
             "searchable": false,
@@ -416,20 +417,28 @@ $.fn.dataTable.ext.search.push(
 
                 
                 "createdRow": function (row, data, index) {
-                    if (data[4] == 'Active') {
-                        $('td', row).eq(4).css({
+                    if (data[3] == 'Passed') {
+                        $('td', row).eq(3).css({
                           'color': 'green',
                        });
                      }
 
-                    else if (data[4] == 'Expired') {
-                        $('td', row).eq(4).css({
+                    else if (data[3] == 'Failed') {
+                        $('td', row).eq(3).css({
                           'color': 'red',
                         });
                      }
                   }
         }
     );
+
+      table.on( 'order.dt search.dt', function () {
+        let i = 1;
+ 
+        table.cells(null, 0, {search:'applied', order:'applied'}).every( function (cell) {
+            this.data(i++);
+        } );
+    } ).draw();
 
     // Refilter the table
     $('#min, #max').on('change', function () {

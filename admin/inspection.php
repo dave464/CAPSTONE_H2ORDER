@@ -2,6 +2,7 @@
 <?php
     require_once 'validate.php';
     require 'name.php';
+    require 'connect.php';
 ?>
 
 <html dir="ltr" lang="en">
@@ -218,8 +219,12 @@
       <!-- Modal body -->
       <div class="modal-body">
         
-        <form action ="add_query_inspection.php?admin_id=<?php echo $fetch['admin_id']?>" method = "POST"  enctype="multipart/form-data"> 
-                <input type="hidden" value="<?php echo $fetch['admin_id']?>" name="admin_id">
+        <form action ="add_query_inspection.php?admin_id=<?php echo $fetch['admin_id']?>" method = "POST"  enctype="multipart/form-data">
+         
+           <input type="hidden" value="<?php echo $fetch['admin_id']?>" name="admin_id">
+
+
+
             <div class = "form-group">
               <label>Name </label>
               <select  class = "form-control" required = required name = "merchant_id">              
@@ -292,7 +297,7 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-top-0">ID</th>
-                                                <th class="border-top-0">NAME</th>
+                                                <th class="border-top-0">BUSINESS NAME</th>
                                                 <th class="border-top-0">DATE</th>
                                                 <th class="border-top-0">FILE</th>
                                                 <th class="border-top-0">STATUS</th>
@@ -434,6 +439,7 @@ $.fn.dataTable.ext.search.push(
         
       pageLength: 10,
         lengthMenu: [[10, 20, 30, 40, 50 - 1], [10, 20, 30, 40, 50, 'all']],
+         aaSorting: [[2, 'desc']],
        
         "columnDefs": [ {
             "searchable": false,
@@ -452,7 +458,7 @@ $.fn.dataTable.ext.search.push(
                         text: '<i class="far fa-file-excel"></i> Copy',
                         title:'Alpha Lab Test',
                         exportOptions: {
-                            columns: ':visible:not(:last-child)'
+                            columns: [ 0, 1, 2, 4 ]
                         }  
                     }, 
                     {  
@@ -461,7 +467,7 @@ $.fn.dataTable.ext.search.push(
                         text: '<i class="far fa-file-excel"></i> Excel',
                         title:'Alpha Lab Test',
                         exportOptions: {
-                            columns: ':visible:not(:last-child)'
+                            columns: [ 0, 1, 2, 4 ]
                         }  
                     },  
                    
@@ -471,7 +477,7 @@ $.fn.dataTable.ext.search.push(
                         text: '<i class="far fa-file-pdf"></i> Pdf',
                         title:'Alpha Lab Test',
                         exportOptions: {
-                            columns: ':visible:not(:last-child)'
+                            columns: [ 0, 1, 2, 4 ]
                         }  
                     },  
                     
@@ -481,7 +487,7 @@ $.fn.dataTable.ext.search.push(
                         text: '<i class="fas fa-print"></i> Print' ,
                         title:'Alpha Lab Test',
                         exportOptions: {
-                            columns: ':visible:not(:last-child)'
+                            columns: [ 0, 1, 2, 4 ]
                             
                         } 
                     },
@@ -503,6 +509,15 @@ $.fn.dataTable.ext.search.push(
                 }
         }
     );
+
+    table.on( 'order.dt search.dt', function () {
+        let i = 1;
+ 
+        table.cells(null, 0, {search:'applied', order:'applied'}).every( function (cell) {
+            this.data(i++);
+        } );
+    } ).draw();
+
        // Refilter the table
     $('#min, #max').on('change', function () {
         table.draw();

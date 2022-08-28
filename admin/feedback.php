@@ -223,7 +223,7 @@
                                                 <th class="border-top-0">ID</th>
                                                 <th class="border-top-0">BUSINESS NAME</th>
                                                 <th class="border-top-0">ADDRESS</th>
-                                                <th class="border-top-0">ACTION</th>
+                                                <th class="border-top-0" style="text-align: center;">ACTION</th>
                                                 
                                             </tr>
                                         </thead>
@@ -239,8 +239,10 @@
                                                 <td><?php echo $fetch['merchant_id']?></td>
                                                 <td><?php echo $fetch['business_name']?></td>
                                                 <td><?php echo $fetch['address']?> <?php echo $fetch['barangay']?> Nasugbu,Batangas</td>
-                                                <td><a class = "btn btn-success"
-       href="feedback_view.php?merchant_id=<?php echo $fetch['merchant_id']?>">View</a></td>
+                                                <td align="center"><a class = "btn btn-success"
+                                                        href="feedback_view.php?merchant_id=<?php echo $fetch['merchant_id']?>" style="color: white">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </a></td>
                                                
                                             </tr>
                                              <?php

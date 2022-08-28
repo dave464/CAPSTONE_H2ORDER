@@ -210,6 +210,8 @@
 <a class="btn btn-info" href = "pending_merchant_list.php" style="margin-top: 20px">  
     <i class = "fa fa-spinner fa-spin"></i> Pending </a>
 
+<a class="btn btn-outline-info" href = "merchant_ranking.php" style="margin-top: 20px">  
+    <i class = "fa fa-trophy"></i> Ranking </a>
 
  <br><br>
     
@@ -227,7 +229,7 @@
                                                 <th class="border-top-0">BUSINESS NAME</th>
                                                 <th class="border-top-0">ADDRESS</th>
                                                 <th class="border-top-0">ACCOUNT STATUS</th>
-                                                <th class="border-top-0">ACTION</th>
+                                                
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -242,13 +244,15 @@
                                                 <td><?php echo $fetch['merchant_id']?></td>
                                                 <td><?php echo $fetch['business_name']?></td>
                                                 <td><?php echo $fetch['address']?> <?php echo $fetch['barangay']?> Nasugbu,Batangas</td>
-                                                <td><?php echo strtoupper($fetch['status'])?></td>
-                                                <td><a class = "btn btn-warning" name="up" href="approve_merchants.php?merchant_id=<?php echo 
+                                                <td><p style="color:orange"><?php echo strtoupper($fetch['status'])?>
+                                                &nbsp <a class = "btn btn-warning" name="up" href="approve_merchants.php?merchant_id=<?php echo 
                                                      $fetch['merchant_id']?>" style="color:white;" ><i class="fa-solid fa-user-check"></i></a>
 
                                                     <a class = "btn btn-danger" href="delete_merchant.php?merchant_id=<?php echo $fetch['merchant_id']?>" onclick = "confirmationDelete(this); return false;"
                                                      style="color:white; margin-left:10px">
-                                                    <i class="fa-solid fa-trash"></i></a></td>
+                                                    <i class="fa-solid fa-trash"></i></a>
+                                                </p></td>
+                                                
                                             </tr>
                                              <?php
                                                 }
