@@ -143,6 +143,7 @@ $.fn.dataTable.ext.search.push(
     {   
       pageLength: 10,
         lengthMenu: [[10, 20, 30, 40, 50 - 1], [10, 20, 30, 40, 50, 'all']],
+        aaSorting: [[2, 'desc']],
        
         "columnDefs": [ {
             "searchable": false,

@@ -301,7 +301,7 @@ input:nth-child(1) {
  
 
  .refresh {
-    max-width: 10px;
+    max-width: 13px;
     background-color: #FFF;
     border: 1px solid #ddd;
     position: absolute;
