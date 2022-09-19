@@ -103,11 +103,11 @@ print_r (LatLongAddres(''.$fetch['d_latitude'].'',''.$fetch['d_longitude'].''));
               $x=$fetch['distance']*1.609344;
               $y=1000;
 
-             if ( $x > 1 ) {
-                echo round($x,2);
+             if ( $fetch['distance'] > 1 ) {
+                echo round('  '.$fetch['distance'].' ) ',2);
                 echo " KM";
 
-             }elseif ($x < 1) {
+             }elseif ($fetch['distance'] < 1) {
                 echo  round($x * $y,2);
                 echo " M";
              }

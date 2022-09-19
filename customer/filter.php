@@ -4,11 +4,14 @@ require_once '../connection.php';
 
 if (isset($_POST['action'])) {
     //sql query
-    $sql = "SELECT product.product_id,product.image,product.product_name,product.volume,
-            product.price,product.product_type, merchant.merchant_id, merchant.business_name,merchant.address,merchant.barangay
-            FROM  merchant
-            RIGHT JOIN product ON merchant.merchant_id = product.merchant_id 
-            WHERE product.merchant_id = merchant.merchant_id && merchant.business_name  != '' ";
+    $sql = "SELECT  product.product_id,product.image,product.product_name,product.volume,product.merchant_id,
+    product.price,product.product_type,merchant.merchant_id, merchant.business_name,merchant.address,merchant.barangay,
+    AVG(product_rating.rating) as Rate
+    FROM  merchant
+    RIGHT JOIN product ON merchant.merchant_id = product.merchant_id 
+    LEFT JOIN product_rating ON product_rating.product_id = product.product_id
+    WHERE product.merchant_id = merchant.merchant_id && merchant.business_name  != ''
+     ";
 
     //adding new price to query if changed
     /*if (isset($_POST['price'])) {
@@ -17,7 +20,37 @@ if (isset($_POST['action'])) {
         $sql .= " AND (price >=". $lowRange ." AND price <= ". $highRange .")";
     }*/
 
-     if (isset($_POST['price'])) {
+    if (isset($_POST['between'])) {
+      $lowRange = 0;
+      $highRange = 10;
+      $sql .= " AND (product.price >=". $lowRange ." AND product.price <= ". $highRange .")";
+    }
+
+    if (isset($_POST['between2'])) {
+      $lowRange = 11;
+      $highRange = 20;
+      $sql .= " AND  (product.price >=". $lowRange ." AND product.price <= ". $highRange .")";
+    }
+
+    if (isset($_POST['between3'])) {
+      $lowRange = 21;
+      $highRange = 30;
+      $sql .= " AND (product.price >=". $lowRange ." AND product.price <= ". $highRange .")";
+    }
+
+    if (isset($_POST['between4'])) {
+      $lowRange = 31;
+      $highRange = 40;
+      $sql .= " AND (product.price >=". $lowRange ." AND product.price <= ". $highRange .")";
+    }
+
+    if (isset($_POST['between5'])) {
+      $highRange = 41;
+      $sql .= " AND  product.price >= ". $highRange ." ";
+    }
+
+
+    if (isset($_POST['price'])) {
         $price = implode(",", $_POST['price']);
         $sql .= " AND product.price IN (". $price .")";
     }
@@ -26,23 +59,39 @@ if (isset($_POST['action'])) {
     //adding category to query if checked
     if (isset($_POST['product_type'])) {
         $product_type = implode(",", $_POST['product_type']);
-        $sql .= " AND product.product_type IN (". $product_type .")";
+        $sql .= "  AND product.product_type IN (". $product_type .")";
+        
+        
     }
  
     //adding product name to query if checked
     if(isset($_POST['product_name'])){
         $product_name = implode(",", $_POST['product_name']);
-        $sql .= " AND product.product_name IN(". $product_name .")";
+        $sql .= " AND  product.product_name IN(". $product_name .")";
     }
 
     //adding volume to query if checked
     if(isset($_POST['volume'])){
         $volume = implode(",", $_POST['volume']);
-        $sql .= " AND product.volume IN(". $volume .")";
+        $sql .= " AND  product.volume IN(". $volume .")";
     }
+ 
+    $sql .=  " GROUP BY product.product_id";
+   
+    if(isset($_POST['sorting']) ) {
+			$sorting = implode(",", $_POST['sorting']);			
+			$sortDir= $sorting =="'low'"?'ASC':'DESC'; 
+				$sql.=" ORDER BY product.price $sortDir";
+			
+		}
 
-  
-    $sql .= " GROUP BY product_id ";
+    if(isset($_POST['ranking']) ) {
+			$ranking = implode(",", $_POST['ranking']);			
+			$ranking= $ranking =="'lowest'"?'ASC':'DESC'; 
+				$sql.=" ORDER BY Rate $ranking";
+		}
+    
+
 
     $result = $conn->query($sql);
     $rows = 0;
@@ -76,7 +125,7 @@ if (isset($_POST['action'])) {
                              $query3 = $conn->query("SELECT inspection.inspection_id, inspection.date, 
                                               inspection.date,inspection.status,inspection.merchant_id
                                                 FROM inspection                                                
-                                                 WHERE inspection.merchant_id = $merchantId ");
+                                                 WHERE inspection.date > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) && inspection.merchant_id = $merchantId ");
 
                             while($fetch3 = $query3->fetch_array()){
                               $bad=$merchantId;

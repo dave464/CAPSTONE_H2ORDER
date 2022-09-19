@@ -144,40 +144,178 @@ require_once '../connection.php';
                     }
                  ?>
         </div>
+
         <div class="py-3"  style="margin-top:-20px">
-            <h5 class="font-weight-bold">Price</h5>
-             <?php 
-                $sql="SELECT DISTINCT product_type FROM product ORDER BY product_type";
-                $result= $conn->query($sql);
-                while ($row=$result->fetch_assoc() ) {
-                
-             ?>
+            <h5 class="font-weight-bold">Sort By</h5>
+            
                 <form class="brand">
                     <div class="form-inline d-flex align-items-center py-1"> 
                         <label class="tick">
-                              <?php
-                            $select_sql = "SELECT DISTINCT price, COUNT(price) as total FROM product GROUP
-                            BY price ORDER BY price";
-                            $result = $conn->query($select_sql);
-
-                            while ($row = $result->fetch_assoc()) {
-                            ?>
+                           
                                 <div class="form-check">
                                     <label class="form-check-label">
-                                        <input type="checkbox" class="form-check-input product-check" value="<?= $row['price']; ?>" id="price"><span>
-                                         &#8369; <?= $row['price']; ?> (<?= $row['total']; ?>)</span>
+                                        <input type="radio" name = "sort" class="form-check-input product-check" value="low" id="sorting"><span>
+                                            Price: Low to High</span>
+                                    </label>
+                                    
+                                </div>
+
+                                <div class="form-check">
+                                <label class="form-check-label">
+                                        <input type="radio" name ="sort" class="form-check-input product-check" value="high" id="sorting"><span>
+                                           Price: High to Low</span>
                                     </label>
                                 </div>
-                            <?php } ?>
+
+                                
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" name="sort" class="form-check-input product-check" value="lowest" id="ranking"><span>
+                                            Rating: Low to High</span>
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" name="sort" class="form-check-input product-check" value="highest" id="ranking"><span>
+                                           Rating: High to Low</span>
+                                    </label>
+                                </div>
+                          
                          </label> 
                      </div>     
-                </form>
-
-                <?php 
-
-                    }
-                 ?>
+                </form>         
         </div>
+
+        <div class="py-3"  style="margin-top:-20px">
+            <h5 class="font-weight-bold">Price</h5>
+            
+                <form class="brand">
+                    <div class="form-inline d-flex align-items-center py-1"> 
+                        <label class="tick">
+                        <label class="form-check-label">
+                                        <input type="radio" name = "sort" class="form-check-input product-check" value="10" ><span>
+                                         &nbsp Show All </span>
+                                    </label>  
+
+                        <?php
+                            $select_sql = "SELECT price, COUNT(price) as total FROM product
+                            WHERE price BETWEEN 1 and 10 
+                            GROUP BY price ORDER BY price";
+                            $result = $conn->query($select_sql);
+                            $count = mysqli_num_rows($result);
+                            $row = $result->fetch_assoc();
+                            ?> 
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" name = "sort" class="form-check-input product-check" value="10" id="between"><span>
+                                        &#8369; 0 - &#8369; 10 (<?php 
+                                       if($count!=0){
+                                        echo ''.$count.'';
+                                       }else{
+                                        echo "0";
+                                       }
+                                       ?>)  </span>
+                                    </label>
+                                    
+                                </div>
+                        
+                        <?php
+                            $select_sql2 = "SELECT price, COUNT(price) as total FROM product
+                            WHERE price BETWEEN 11 AND 20 
+                            GROUP BY price ORDER BY price";      
+                            $result2 = $conn->query($select_sql2);
+                            $count2 = mysqli_num_rows($result2);
+                            $row2 = $result2->fetch_assoc();
+                            ?> 
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" name = "sort" class="form-check-input product-check" value="20" id="between2"><span>
+                                        &#8369; 11 - &#8369; 20 (<?php 
+                                       if($count2!=0){
+                                        echo ''.$count2.'';
+                                       }else{
+                                        echo "0";
+                                       }
+                                       ?>)  </span>
+                                    </label>
+                                    
+                                </div>
+
+                          <?php
+                            $select_sql3 = "SELECT price, COUNT(price) as total FROM product
+                            WHERE price BETWEEN 21 AND 30 
+                            GROUP BY price ORDER BY price";
+                            $result3 = $conn->query($select_sql3);
+                            $count3 = mysqli_num_rows($result3);
+                            $row3 = $result3->fetch_assoc();
+                            ?> 
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" name = "sort" class="form-check-input product-check" value="30" id="between3"><span>
+                                        &#8369; 21 - &#8369; 30 (<?php 
+                                       if($count3!=0){
+                                        echo ''.$count3.'';
+                                       }else{
+                                        echo "0";
+                                       }
+                                       ?>)  </span>
+                                    </label>
+                                    
+                                </div>
+
+                          <?php
+                            $select_sql4 = "SELECT price, COUNT(price) as total FROM product
+                            WHERE price BETWEEN 31 AND 40 
+                            GROUP BY price ORDER BY price";
+                            $result4 = $conn->query($select_sql4);
+                            $count4 = mysqli_num_rows($result4);
+                            $row4 = $result4->fetch_assoc();
+                            ?> 
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" name = "sort" class="form-check-input product-check" value="40" id="between4"><span>
+                                        &#8369; 31 - &#8369; 40 (<?php 
+                                       if($count4!=0){
+                                        echo ''.$count4.'';
+                                       }else{
+                                        echo "0";
+                                       }
+                                       ?>)  </span>
+                                    </label>
+                                    
+                                </div>
+
+                          <?php
+                            $select_sql5 = "SELECT price, COUNT(price) as total FROM product
+                            WHERE price BETWEEN 41 AND  10000 
+                            GROUP BY price ORDER BY price";
+                            $result5 = $conn->query($select_sql5);
+                            $count5 = mysqli_num_rows($result5);
+                            $row5 = $result5->fetch_assoc();
+                            ?> 
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="radio" name = "sort" class="form-check-input product-check" value="50" id="between5"><span>
+                                       Above  &#8369; 40 (<?php 
+                                       if($count5!=0){
+                                        echo ''.$count5.'';
+                                       }else{
+                                        echo "0";
+                                       }
+                                       ?>)  </span>
+                                    </label>
+                                    
+                                </div>
+
+                               
+                          
+                         </label> 
+                     </div>     
+                </form>         
+        </div>
+
         
     </div>
 
@@ -311,7 +449,7 @@ require_once '../connection.php';
                              $query3 = $conn->query("SELECT inspection.inspection_id, inspection.date, 
                                               inspection.date,inspection.status,inspection.merchant_id
                                                 FROM inspection                                                
-                                                 WHERE inspection.merchant_id = $merchantId ");
+                                                 WHERE inspection.date > DATE_SUB(CURDATE(), INTERVAL 6 MONTH) && inspection.merchant_id = $merchantId ");
 
                             while($fetch3 = $query3->fetch_array()){
                               $bad=$merchantId;

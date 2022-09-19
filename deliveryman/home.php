@@ -27,9 +27,9 @@ if(isset($_SESSION['lat']) && isset($_SESSION['lon'])){
   RIGHT JOIN customer ON orderlist.customer_id = customer.customer_id
   RIGHT JOIN deliveryman ON orderlist.deliveryman_id = deliveryman.deliveryman_id
   WHERE orderlist.status = 'dispatched' && orderlist.deliveryman_id = '".$_SESSION['deliveryman_id']."' 
- 
+  HAVING distance < 100
 ORDER BY distance  ");
-
+$count = mysqli_num_rows($res);
 
 
 }else{
@@ -184,21 +184,6 @@ if(isset($_POST['lat']) && isset($_POST['lon'])){
 
  <?php 
 
-
-$no=mysqli_query($conn," SELECT product.product_id,product.image,product.product_name,product.product_type,
-  product.price, product.merchant_id, orderlist.order_id, orderlist.quantity, orderlist.total ,orderlist.status, orderlist.type,
-  orderlist.date, customer.firstname, customer.lastname, customer.customer_id,customer.address,customer.barangay,
-  deliveryman.name, deliveryman.deliveryman_id as delname
-  
-  FROM orderlist 
-  RIGHT JOIN product ON orderlist.product_id = product.product_id 
-  RIGHT JOIN customer ON orderlist.customer_id = customer.customer_id
-  RIGHT JOIN deliveryman ON orderlist.deliveryman_id = deliveryman.deliveryman_id
-  WHERE orderlist.status = 'dispatched' && orderlist.deliveryman_id = '".$_SESSION['deliveryman_id']."' 
- 
- ");
-$count = mysqli_num_rows($no);
-
 if ($count > 0) {
 
  while($fetch=mysqli_fetch_assoc($res)){
@@ -235,11 +220,11 @@ if ($count > 0) {
                             $x=$fetch['distance']*1.609344;
                             $y=1000;
 
-                           if ( $x > 1 ) {
-                              echo round($x,2);
+                           if ( $fetch['distance'] > 1 ) {
+                              echo round('  '.$fetch['distance'].' ) ',2);
                               echo " KM";
 
-                           }elseif ($x < 1) {
+                           }elseif ($fetch['distance'] < 1) {
                               echo  round($x * $y,2);
                               echo " M";
                            }
